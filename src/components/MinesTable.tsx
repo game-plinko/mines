@@ -95,7 +95,9 @@ export const MinesTable: React.FC<Props> = ({
     if (cashOut) {
       setShowAll(true);
       playSound(sounds.cashOutSound);
-      setCashAmount(cashAmount + wagerAmount * multiplier);
+      if (numberUncovered > 0) {
+        setCashAmount(cashAmount + wagerAmount * multiplier);
+      }
     } else if (lost) {
       setCashAmount(cashAmount - wagerAmount);
     }
