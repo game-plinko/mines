@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import dollarSignSvg from "../assets/svg/dollar-sign-orange.svg";
 
 interface Props {
@@ -8,6 +9,9 @@ interface Props {
   setCashOut: React.Dispatch<React.SetStateAction<boolean>>;
   numberOfMines: number;
   setNumberOfMines: React.Dispatch<React.SetStateAction<number>>;
+  cashAmount: number;
+  setCashAmount: React.Dispatch<React.SetStateAction<number>>;
+  numberUncovered: number;
 }
 
 export const Wager: React.FC<Props> = ({
@@ -18,9 +22,18 @@ export const Wager: React.FC<Props> = ({
   setCashOut,
   numberOfMines,
   setNumberOfMines,
+  cashAmount,
+  setCashAmount,
+  numberUncovered,
 }) => {
+  useEffect(() => {
+    if (cashAmount < wagerAmount) {
+      setWagerAmount(cashAmount);
+    }
+  }, [cashAmount, wagerAmount, setWagerAmount]);
+
   return (
-    <div className="w-[320px] text-slate-300 bg-[#213743] h-[640px] rounded-tl-lg">
+    <div className="w-full lg:w-[320px] text-slate-300 bg-[#213743] lg:h-[640px] rounded-tl-lg">
       <div className="flex flex-col justify-center items-center p-4">
         <div className="w-full space-y-4">
           <div className="w-full space-y-1">
@@ -37,7 +50,11 @@ export const Wager: React.FC<Props> = ({
                   value={wagerAmount.toFixed(2)}
                   onChange={(e) => {
                     const value = parseFloat(e.target.value);
-                    setWagerAmount(isNaN(value) ? 0 : value);
+                    const validValue = isNaN(value) ? 0 : value;
+                    // Clamp value to cashAmount
+                    setWagerAmount(
+                      validValue > cashAmount ? cashAmount : validValue
+                    );
                   }}
                 />
                 <img
@@ -50,7 +67,7 @@ export const Wager: React.FC<Props> = ({
                 <button
                   disabled={inGame}
                   className="w-1/2 flex justify-center items-center text-center"
-                  onClick={() => setWagerAmount((wagerAmount * 1) / 2)}
+                  onClick={() => setWagerAmount(wagerAmount / 2)}
                 >
                   1/2
                 </button>
@@ -58,7 +75,9 @@ export const Wager: React.FC<Props> = ({
                 <button
                   disabled={inGame}
                   className="w-1/2 flex justify-center items-center text-center"
-                  onClick={() => setWagerAmount(wagerAmount * 1 * 2)}
+                  onClick={() =>
+                    setWagerAmount(Math.min(wagerAmount * 2, cashAmount))
+                  }
                 >
                   2x
                 </button>
@@ -76,13 +95,14 @@ export const Wager: React.FC<Props> = ({
                   value={numberOfMines}
                   onChange={(e) => {
                     const value = parseFloat(e.target.value);
-                    setNumberOfMines(isNaN(value) ? 0 : value);
+                    setNumberOfMines(isNaN(value) ? 0 : value < 25 ? value : 0);
                   }}
                 />
               </div>
             </div>
           </div>
           <button
+            disabled={numberUncovered === 0 && inGame}
             className="bg-[#01E801] w-full h-12 rounded-lg flex justify-center items-center"
             onClick={() => {
               if (inGame) {
@@ -91,6 +111,7 @@ export const Wager: React.FC<Props> = ({
               } else {
                 setInGame(true);
                 setCashOut(false);
+                setCashAmount(cashAmount - wagerAmount);
               }
             }}
           >

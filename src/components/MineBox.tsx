@@ -13,7 +13,6 @@ interface Props {
   setInGame: React.Dispatch<React.SetStateAction<boolean>>;
   numberUncovered: number;
   setNumberUncovered: React.Dispatch<React.SetStateAction<number>>;
-  setLost: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const MineBox: React.FC<Props> = ({
@@ -24,7 +23,6 @@ const MineBox: React.FC<Props> = ({
   setInGame,
   numberUncovered,
   setNumberUncovered,
-  setLost,
 }) => {
   const [shown, setShown] = useState<boolean>(false);
   const [animating, setAnimating] = useState<boolean>(false);
@@ -102,7 +100,6 @@ const MineBox: React.FC<Props> = ({
         // Only set showAll if it's a bomb
         setShowAll((prev) => prev || true);
         setInGame(false);
-        setLost(true);
       }
     }, 150);
 
@@ -113,7 +110,7 @@ const MineBox: React.FC<Props> = ({
   };
 
   return (
-    <div className="relative w-[110px] h-[108px]">
+    <div className="relative w-[70px] h-[68px] sm:w-[80px] sm:h-[78px] md:w-[100px] md:h-[98px] xl:w-[110px] xl:h-[108px] 2xl:w-[120px] 2xl:h-[118px] mx-auto my-auto">
       <div
         className={`absolute ${
           shown || showAll ? "" : "top-2"
@@ -133,8 +130,8 @@ const MineBox: React.FC<Props> = ({
           <img
             className={`transition-opacity duration-500 ${
               showAll && !shown
-                ? "h-14 w-14 opacity-30"
-                : "h-20 w-20 opacity-100"
+                ? "h-8 w-8 sm:h-12 sm:w-12 xl:h-14 xl:w-14 2xl:w-16 2xl:h-16 opacity-30"
+                : "h-12 w-12 sm:h-16 sm:w-16 xl:h-20 xl:w-20 2xl:w-24 2xl:h-24 opacity-100"
             }`}
             src={gemStonePng}
             alt="gem stone"
@@ -143,8 +140,8 @@ const MineBox: React.FC<Props> = ({
           <img
             className={`transition-opacity duration-500 ${
               showAll && !shown
-                ? "h-14 w-14 opacity-40"
-                : "h-20 w-20 opacity-100"
+                ? "h-8 w-8 sm:h-12 sm:w-12 xl:h-14 xl:w-14 2xl:w-16 2xl:h-16 opacity-40"
+                : "h-12 w-12 sm:h-16 sm:w-16 xl:h-20 xl:w-20 2xl:w-24 2xl:h-24 opacity-100"
             }`}
             src={BombPng}
             alt="bomb"

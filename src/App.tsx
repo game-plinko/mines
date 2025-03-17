@@ -11,19 +11,24 @@ const App: React.FC = () => {
   const [wagerAmount, setWagerAmount] = useState<number>(0);
   const [numberOfGems, setNumberOfGems] = useState<number>(22);
   const [numberOfMines, setNumberOfMines] = useState<number>(3);
+  const [numberUncovered, setNumberUncovered] = useState<number>(0);
   const [inGame, setInGame] = useState<boolean>(false);
   const [cashOut, setCashOut] = useState<boolean>(false);
 
   useEffect(() => {
     setNumberOfGems(25 - numberOfMines);
-  }, [numberOfMines]);
+  }, [numberOfMines, setNumberOfGems]);
 
   return (
-    <div className="bg-[#1A2C38] min-h-screen">
+    <div className="bg-[#1A2C38] h-[130vh] xl:h-[105vh]">
       <div className="flex w-full">
-        <img className="h-screen" src={leftNavBarPng} alt="Left Nav Bar" />
+        <img
+          className="h-screen hidden xl:block"
+          src={leftNavBarPng}
+          alt="Left Nav Bar"
+        />
         <div className="w-full">
-          <header className="h-16 border-b-2 border-slate-800 shadow-xl flex w-full justify-start items-center px-16 space-x-96">
+          <header className="h-16 border-b-2 border-slate-800 shadow-xl flex w-full justify-center lg:justify-start items-center md:px-16 space-x-4 md:space-x-10 lg:space-x-96">
             <div>
               <img className="h-8" src={stakeLogo} alt="Stake Logo" />
             </div>
@@ -43,8 +48,8 @@ const App: React.FC = () => {
               </div>
             </div>
           </header>
-          <div className=" ml-12 w-11/12 bg-[#0F212E] h-[670px] items-start rounded-lg mt-8">
-            <div className="flex justify-between">
+          <div className="lg:ml-12 w-full sm:w-3/4 lg:w-11/12 bg-[#0F212E] lg:h-[670px] items-start rounded-lg mt-8 mx-auto">
+            <div className="lg:flex justify-between">
               <Wager
                 wagerAmount={wagerAmount}
                 setWagerAmount={setWagerAmount}
@@ -53,8 +58,13 @@ const App: React.FC = () => {
                 setCashOut={setCashOut}
                 numberOfMines={numberOfMines}
                 setNumberOfMines={setNumberOfMines}
+                cashAmount={cashAmount}
+                setCashAmount={setCashAmount}
+                numberUncovered={numberUncovered}
               />
               <MinesTable
+                numberUncovered={numberUncovered}
+                setNumberUncovered={setNumberUncovered}
                 inGame={inGame}
                 setInGame={setInGame}
                 cashOut={cashOut}

@@ -19,8 +19,6 @@ function pWinning(
     // Denominator: 25! * (25 - (bombs + spacesUncovered))!
     const denominator =
         factorial(25) * factorial(25 - (bombs + spacesUncovered));
-
-    console.log(numerator / denominator)
     return numerator / denominator;
 }
 
