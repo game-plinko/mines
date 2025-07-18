@@ -36,6 +36,7 @@ export const MinesTable: React.FC<Props> = ({
   const [showAll, setShowAll] = useState<boolean>(false);
   const [multiplier, setMultiplier] = useState<number>(0);
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
+  const [firstGame, setFirstGame] = useState<boolean>(true);
 
   const [sounds, setSounds] = useState<{ [key: string]: AudioBuffer | null }>({
     cashOutSound: null,
@@ -108,7 +109,8 @@ export const MinesTable: React.FC<Props> = ({
   useEffect(() => {
     // This effect runs every time `inGame` changes.
     // We only want to shuffle the board when inGame is true.
-    if (inGame) {
+    if (inGame || firstGame) {
+      setFirstGame(false);
       playSound(sounds.clickPlaySound);
       const newStates = shuffleArray([
         ...Array(numberOfGems).fill(1),
@@ -121,7 +123,7 @@ export const MinesTable: React.FC<Props> = ({
   }, [inGame]);
 
   return (
-    <div className="w-auto grid grid-cols-5 grid-rows-5 gap-3 lg:gap-x-3 2xl:gap-x-5 relative px-4 mx-auto items-center my-12 lg:my-8 xl:my-4 2xl:my-0">
+    <div className="w-auto grid grid-cols-5 grid-rows-5 gap-3 lg:gap-x-3 relative px-4 mx-auto items-center my-12 lg:my-8 xl:my-4">
       {cashOut && numberUncovered > 0 && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#192C38] rounded-xl z-50 p-4 border-4 border-[#01E801] space-y-2 w-40">
           <div className="flex justify-center w-full items-center text-[#01E801] font-extrabold text-2xl">

@@ -32,6 +32,7 @@ const MineBox: React.FC<Props> = ({
     mine2: null,
     bomb: null,
   });
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     if (inGame) {
@@ -83,6 +84,9 @@ const MineBox: React.FC<Props> = ({
   const handleClick = async (): Promise<void> => {
     if (shown || showAll) return; // Prevent multiple clicks
 
+    setClicked(true);
+    setTimeout(() => setClicked(false), 150);
+
     // Resume the AudioContext if it's suspended.
     if (audioContext && audioContext.state === "suspended") {
       await audioContext.resume();
@@ -110,7 +114,7 @@ const MineBox: React.FC<Props> = ({
   };
 
   return (
-    <div className="relative w-[70px] h-[68px] sm:w-[80px] sm:h-[78px] md:w-[100px] md:h-[98px] xl:w-[110px] xl:h-[108px] 2xl:w-[120px] 2xl:h-[118px] mx-auto my-auto">
+    <div className="relative w-[70px] h-[68px] sm:w-[80px] sm:h-[78px] md:w-[100px] md:h-[98px] xl:w-[110px] xl:h-[108px] 2xl:w-[120px] 2xl:h-[118px] mx-auto my-auto mb-1">
       <div
         className={`absolute ${
           shown || showAll ? "" : "top-2"
@@ -120,7 +124,11 @@ const MineBox: React.FC<Props> = ({
         onClick={handleClick}
         disabled={shown || showAll || !inGame}
         className={`relative transition-all duration-300 ease-out
-      ${shown || showAll ? "bg-[#0A1825]" : "bg-[#2F4553] hover:bg-[#486579]"}
+      ${
+        shown || showAll
+          ? "bg-[#0A1825]"
+          : "bg-[#2F4553] hover:bg-[#486579] hover:-translate-y-1"
+      } ${clicked ? "scale-95" : ""}
       w-full h-full rounded-lg flex justify-center items-center
       shadow-2xl
       ${animating ? "scale-110" : "scale-100"}
