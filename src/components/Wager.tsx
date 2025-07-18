@@ -31,10 +31,11 @@ export const Wager: React.FC<Props> = ({
   numberUncovered,
 }) => {
   useEffect(() => {
+    console.log(inGame);
     if (cashAmount < wagerAmount && !inGame) {
       setWagerAmount(cashAmount);
     }
-  }, [cashAmount, wagerAmount, setWagerAmount]);
+  }, [cashAmount, wagerAmount, setWagerAmount, inGame]);
 
   const [clicked, setClicked] = useState(false);
 
